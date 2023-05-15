@@ -35,27 +35,29 @@ app.post("/sendbulk", async (req, res) => {
     try {
         const body = req.body;
         let { users } = await admin.auth().listUsers(body.noOfUsers);
+        users = users.slice(body.noOfUsers - body.offSet, body.noOfUsers);
         if (users.length == 0) {
             res.status(204);
             res.json({
                 messages: ["The messages has been send to all of the users"],
                 body: []
             });
-            res.end();
+            return;
         }
-        users = users.slice(body.noOfUsers - body.offset, body.noOfUsers);
+        console.log(users.length,body.noOfUsers,body.offSet);
 
         for(let i=0; i<users.length;i++)
         {
             let user=users[i];
-            await client.messages.create({ body: body.message, from: process.env.TWILIO_PHONE_NUMBER, to: user.phoneNumber })
-            
+            let resp=await client.messages.create({ body: body.message, from: process.env.TWILIO_PHONE_NUMBER, to: user.phoneNumber });    
         }
         res.status(200);
         res.json({ messages: ["The messages are send to the defined number of users successfully"] });
+        return;
     }
     catch (err) {
-        console.log(err.code);
+        console.log("Heree");
+        console.log(err);
         res.status(400);
         res.json({
             messages: ["The bulk messages were not sent due to an error", err.message],

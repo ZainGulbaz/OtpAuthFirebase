@@ -27,11 +27,17 @@ export default function SMSModal({ isOpen, progress, setIsOpen,setProgress }) {
                 setProgress(5);
                 break;
             }
-            else if (result[noOfReqAtTime - 1].status == 204) {
-                toast.success(result[noOfReqAtTime - 1].data.messages[0]);
-                setIsOpen(false);
-                setProgress(5);
-                break;
+            else  {
+                let shouldBrake=false;
+                result?.map(res=>{
+                   if(res.status==204){
+                    toast.success(result[noOfReqAtTime - 1].data.messages[0]);
+                    setIsOpen(false);
+                    setProgress(5);
+                    shouldBrake=true;
+                   }
+                });
+            if(shouldBrake)break;
             }
         }
     }
