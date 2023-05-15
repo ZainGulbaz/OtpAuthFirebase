@@ -18,5 +18,5 @@ import firebase from 'firebase/compat/app';
       
       };
   
-      firebase.initializeApp(firebaseConfig);
-export {firebase};
+     const app= firebase.initializeApp(firebaseConfig);
+export {firebase,app};

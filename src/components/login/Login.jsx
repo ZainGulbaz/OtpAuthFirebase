@@ -4,6 +4,7 @@ import PhoneNumberScreen from "./PhoneNumberScreen";
 import OtpScreen from "./OtpScreen";
 import { fireBaseLoginApi } from "./Api";
 import toast from "react-hot-toast";
+import {useNavigate} from "react-router";
 
 const Login = () => {
   const [activeScreens, setActiveScreens] = useState({
@@ -15,7 +16,7 @@ const Login = () => {
   const [generatedOtp, setGeneratedOtp] = useState(0);
   const [btnLoading, setBtnLoading] = useState(false);
   const [disableBtn,setDisableBtn] = useState(true);
-
+  const navigate= useNavigate();
   const handleNextScreen = async (event) => {
     try {
       if (activeScreens["phoneNumber"]) {
@@ -29,6 +30,7 @@ const Login = () => {
         setBtnLoading(true);
         await generatedOtp.confirm(otp);
         toast.success("You are logged in successfully");
+        navigate("/home");
       }
     } catch (err) {
     
@@ -52,8 +54,8 @@ const Login = () => {
         justifyContent={"center"}
         alignItems={"center"}
         gap={10}
-        mt={[-100]}
-        w="50%"
+        mt={[10]}
+        w={["100%","80%","50%"]}
         p={4}
         boxShadow={"lg"}
       >
